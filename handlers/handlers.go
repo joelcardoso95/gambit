@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/aws/aws-lambda-go/events"
 )
@@ -10,8 +9,8 @@ import (
 func Handlers(path string, method string, body string, headers map[string]string, request events.APIGatewayV2HTTPRequest) (int, string) {
 	fmt.Println("Processando " + path + " > " + method)
 
-	id := request.PathParameters["id"]
-	idn, _ := strconv.Atoi(id)
+	//id := request.PathParameters["id"]
+	//idn, _ := strconv.Atoi(id)
 
 	return 400, "Method Invalid"
 }
