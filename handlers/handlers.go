@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/gambit/auth"
+	"github.com/gambit/routers"
 )
 
 func Handlers(path string, method string, body string, headers map[string]string, request events.APIGatewayV2HTTPRequest) (int, string) {
@@ -72,6 +73,10 @@ func ProductProcess(body string, path string, method string, user string, id int
 }
 
 func CategoryProcess(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+	switch method {
+	case "POST":
+		return routers.InsertCategory(body, user)
+	}
 	return 400, "Method invalid"
 }
 

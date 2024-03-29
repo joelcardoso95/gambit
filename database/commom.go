@@ -46,3 +46,32 @@ func StringConnection(key models.SecretRDSJson) string {
 	fmt.Println(databaseString)
 	return databaseString
 }
+
+func UserIsAdmin(userUUID string) (bool, string) {
+	fmt.Println("Validação do nivel de acesso do usuário")
+
+	err := DatabaseConnection()
+	if err != nil {
+		return false, err.Error()
+	}
+	defer Database.Close()
+
+	query := "SELECT 1 FROM users WHERE User_UUID='" + userUUID + "' AND User_Status = 0"
+	fmt.Println(query)
+
+	rows, err := Database.Query(query)
+	if err != nil {
+		return false, err.Error()
+	}
+
+	var value string
+	rows.Next()
+	rows.Scan(&value)
+
+	fmt.Print("UserIdAdmin " + value)
+	if value == "1" {
+		return true, ""
+	}
+
+	return false, "User is not ADMIN"
+}
