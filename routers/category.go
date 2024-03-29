@@ -8,7 +8,7 @@ import (
 	"github.com/gambit/models"
 )
 
-func InsertCategory(body string, User string) (int, string) {
+func InsertCategory(body string, user string) (int, string) {
 	var category models.Category
 
 	err := json.Unmarshal([]byte(body), &category)
@@ -24,7 +24,7 @@ func InsertCategory(body string, User string) (int, string) {
 		return 400, "Erro ao receber o Path da categoria "
 	}
 
-	isAdmin, msg := database.UserIsAdmin(User)
+	isAdmin, msg := database.UserIsAdmin(user)
 	if !isAdmin {
 		return 400, msg
 	}

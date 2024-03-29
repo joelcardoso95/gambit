@@ -79,6 +79,7 @@ func ProductProcess(body string, path string, method string, user string, id int
 func CategoryProcess(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 	switch method {
 	case "POST":
+		fmt.Println("Enviando dados para categoria " + "body " + body + "user " + user)
 		return routers.InsertCategory(body, user)
 	}
 	return 400, "Method invalid"
