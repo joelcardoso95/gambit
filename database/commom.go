@@ -48,7 +48,7 @@ func StringConnection(key models.SecretRDSJson) string {
 }
 
 func UserIsAdmin(userUUID string) (bool, string) {
-	fmt.Println("Validação do nivel de acesso do usuário")
+	fmt.Println("Validação do nivel de acesso do usuário", userUUID)
 
 	err := DatabaseConnection()
 	if err != nil {
