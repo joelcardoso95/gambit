@@ -12,6 +12,8 @@ import (
 func Handlers(path string, method string, body string, headers map[string]string, request events.APIGatewayV2HTTPRequest) (int, string) {
 	fmt.Println("Processando " + path + " > " + method)
 
+	fmt.Println("Requisição recebida ", request.Headers)
+
 	id := request.PathParameters["id"]
 	idn, _ := strconv.Atoi(id)
 
@@ -42,6 +44,8 @@ func tokenAuthorization(path string, method string, headers map[string]string) (
 	if (path == "product" && method == "GET") || (path == "category" && method == "GET") {
 		return true, 200, ""
 	}
+
+	fmt.Println("Validação de Token", headers)
 
 	token := headers["Authorization"]
 	if len(token) == 0 {
