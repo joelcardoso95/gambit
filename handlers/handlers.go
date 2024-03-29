@@ -22,7 +22,7 @@ func Handlers(path string, method string, body string, headers map[string]string
 		return statusCode, user
 	}
 
-	switch path[0:4] {
+	switch path[1:5] {
 	case "user":
 		return UsersProcess(body, path, method, user, id, request)
 	case "prod":
