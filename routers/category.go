@@ -36,3 +36,29 @@ func InsertCategory(body string, user string) (int, string) {
 
 	return 200, "CategID: " + strconv.Itoa(int(result))
 }
+
+func UpdateCategory(body string, user string, categoryId int) (int, string) {
+	var category models.Category
+
+	err := json.Unmarshal([]byte(body), &category)
+	if err != nil {
+		return 400, "Erro ao receber os dados da categoria " + err.Error()
+	}
+
+	if len(category.CategName) == 0 && len(category.CategPath) == 0 {
+		return 400, "Erro ao receber o Path da categoria "
+	}
+
+	isAdmin, msg := database.UserIsAdmin(user)
+	if !isAdmin {
+		return 400, msg
+	}
+
+	category.CategID = categoryId
+	errUpdate := database.UpdateCategory(category)
+	if errUpdate != nil {
+		return 400, "Erro ao realizar atualizar categoria " + strconv.Itoa(categoryId) + " > " + errUpdate.Error()
+	}
+
+	return 200, "Categoria Atualizada"
+}
