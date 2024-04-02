@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/gambit/database"
@@ -10,6 +11,7 @@ import (
 
 func InsertProduct(body string, user string) (int, string) {
 	var product models.Product
+	fmt.Println("Dados recebidos: " + body)
 	err := json.Unmarshal([]byte(body), &product)
 	if err != nil {
 		return 400, "Erro ao receber dados: " + err.Error()
