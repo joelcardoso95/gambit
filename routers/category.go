@@ -62,3 +62,22 @@ func UpdateCategory(body string, user string, categoryId int) (int, string) {
 
 	return 200, "Categoria Atualizada"
 }
+
+func DeleteCategory(body string, user string, id int) (int, string) {
+	if id == 0 {
+		return 400, "Id Categoria deve ser informado"
+	}
+
+	isAdmin, msg := database.UserIsAdmin(user)
+	if !isAdmin {
+		return 400, msg
+	}
+
+	err := database.DeleteCategory(id)
+	if err != nil {
+		return 400, "Erro ao tentar excluir categoria " + strconv.Itoa(id) + " > " + err.Error()
+	}
+
+	return 201, ""
+
+}

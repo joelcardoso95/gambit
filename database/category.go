@@ -71,3 +71,24 @@ func UpdateCategory(category models.Category) error {
 	fmt.Println("Categoria Atualizada com sucesso")
 	return nil
 }
+
+func DeleteCategory(id int) error {
+	fmt.Println("Excluindo categoria")
+
+	err := DatabaseConnection()
+	if err != nil {
+		return err
+	}
+	defer Database.Close()
+
+	query := "DELETE FROM category WHERE Categ_Id = " + strconv.Itoa(id)
+
+	_, err = Database.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Categoria excluida com sucesso")
+	return nil
+}
