@@ -18,7 +18,7 @@ func InsertProduct(product models.Product) (int64, error) {
 	}
 	defer Database.Close()
 
-	query := "INSERT INTO products (Prod_Title, "
+	query := "INSERT INTO products (Prod_Title "
 
 	if len(product.ProdDescription) > 0 {
 		query += ", Prod_Description"
@@ -55,6 +55,7 @@ func InsertProduct(product models.Product) (int64, error) {
 	}
 
 	query += ")"
+	fmt.Println("Insert query produto " + query)
 
 	var result sql.Result
 	result, err = Database.Exec(query)
