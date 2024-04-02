@@ -92,7 +92,7 @@ func UpdateProduct(product models.Product) error {
 	query = tools.AdjustQuery(query, "Prod_Stock", "N", product.ProdStock, 0, "")
 	query = tools.AdjustQuery(query, "Prod_Path", "S", 0, 0, product.ProdPath)
 
-	query += " WHERE Prod_Id " + strconv.Itoa(product.ProductId)
+	query += " WHERE Prod_Id = " + strconv.Itoa(product.ProductId)
 
 	_, err = Database.Exec(query)
 	if err != nil {
