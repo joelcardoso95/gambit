@@ -53,5 +53,20 @@ func UpdateProduct(body string, user string, productId int) (int, string) {
 		return 400, "Erro ao realizar atualizar produto " + strconv.Itoa(productId) + " > " + errUpdate.Error()
 	}
 
-	return 200, "Produto Atualizado"
+	return 202, "Produto Atualizado"
+}
+
+func DeleteProduct(user string, productId int) (int, string) {
+	isAdmin, msg := database.UserIsAdmin(user)
+	if !isAdmin {
+		return 400, msg
+	}
+
+	err := database.DeleteProduct(productId)
+	if err != nil {
+		return 400, "Erro ao realizar delete d produto " + strconv.Itoa(productId) + " > " + err.Error()
+	}
+
+	return 202, "Produto Excluido"
+
 }

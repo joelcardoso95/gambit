@@ -103,3 +103,24 @@ func UpdateProduct(product models.Product) error {
 	fmt.Println("Produto atualizado com sucesso")
 	return nil
 }
+
+func DeleteProduct(productId int) error {
+	fmt.Println("Realziando exclusao do produto")
+
+	err := DatabaseConnection()
+	if err != nil {
+		return err
+	}
+	defer Database.Close()
+
+	query := "DELETE FROM products WHERE Prod_Id = " + strconv.Itoa(productId)
+
+	_, err = Database.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Produto excluido com sucesso")
+	return nil
+}
