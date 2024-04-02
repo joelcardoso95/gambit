@@ -33,3 +33,25 @@ func InsertProduct(body string, user string) (int, string) {
 
 	return 200, "{ProductId:  " + strconv.Itoa(int(result)) + "}"
 }
+
+func UpdateProduct(body string, user string, productId int) (int, string) {
+	var product models.Product
+
+	err := json.Unmarshal([]byte(body), &product)
+	if err != nil {
+		return 400, "Erro ao receber os dados do produto " + err.Error()
+	}
+
+	isAdmin, msg := database.UserIsAdmin(user)
+	if !isAdmin {
+		return 400, msg
+	}
+
+	product.ProductId = productId
+	errUpdate := database.UpdateProduct(product)
+	if errUpdate != nil {
+		return 400, "Erro ao realizar atualizar produto " + strconv.Itoa(productId) + " > " + errUpdate.Error()
+	}
+
+	return 200, "Produto Atualizado"
+}
