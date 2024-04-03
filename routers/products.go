@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/gambit/database"
 	"github.com/gambit/models"
 )
@@ -68,5 +70,59 @@ func DeleteProduct(user string, productId int) (int, string) {
 	}
 
 	return 202, "Produto Excluido"
+
+}
+
+func SelectProduct(request events.APIGatewayV2HTTPRequest) (int, string) {
+	var product models.Product
+	var page, pageSize int
+	var orderType, orderField string
+
+	params := request.QueryStringParameters
+
+	page, _ = strconv.Atoi(params["page"])
+	pageSize, _ = strconv.Atoi(params["pageSize"])
+	orderType = params["orderType"]   // D = DESC . A or Nil = ASC
+	orderField = params["orderField"] // T = Title, 'D' = DATE, P = Price, C = Category, S = Stock
+
+	if !strings.Contains("TDPCS", orderField) {
+		orderField = ""
+	}
+
+	var choice string
+	if len(params["prodId"]) > 0 {
+		choice = "P"
+		product.ProductId, _ = strconv.Atoi(params["prodId"])
+	}
+	if len(params["search"]) > 0 {
+		choice = "S"
+		product.ProdSearch, _ = params["search"]
+	}
+	if len(params["categId"]) > 0 {
+		choice = "C"
+		product.ProdCategId, _ = strconv.Atoi(params["categId"])
+	}
+	if len(params["slug"]) > 0 {
+		choice = "U"
+		product.ProdPath, _ = params["slug"]
+	}
+	if len(params["slugCateg"]) > 0 {
+		choice = "K"
+		product.ProdPath, _ = params["slugCateg"]
+	}
+
+	fmt.Println("Parametros: ", params)
+
+	result, errSelect := database.SelectProduct(product, choice, page, pageSize, orderType, orderField)
+	if errSelect != nil {
+		return 400, "Erro ao consultar produtos " + errSelect.error()
+	}
+
+	returnedProduct, errJson := json.Marshal(result)
+	if errJson != nil {
+		return 400, "Erro ao converter produtos " + errJson.Error()
+	}
+
+	return 200, string(returnedProduct)
 
 }
