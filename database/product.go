@@ -148,7 +148,7 @@ func SelectProduct(product models.Product, choice string, page int, pageSize int
 	case "P":
 		where = " WHERE Prod_Id = " + strconv.Itoa(product.ProductId)
 	case "S":
-		where = " WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%" + strings.ToUpper(product.ProdSearch) + "%' "
+		where = " WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%" + strings.ToUpper(p.ProdSearch) + "%' "
 	case "C":
 		where = " WHERE Prod_CategoryId = " + strconv.Itoa(product.ProdCategId)
 	case "U":
@@ -161,6 +161,7 @@ func SelectProduct(product models.Product, choice string, page int, pageSize int
 
 	queryCount += where
 
+	fmt.Println("QueryCount: ", queryCount)
 	var rows *sql.Rows
 	rows, err = Database.Query(queryCount)
 	defer rows.Close()
@@ -170,6 +171,7 @@ func SelectProduct(product models.Product, choice string, page int, pageSize int
 		return response, err
 	}
 
+	fmt.Println("Retorno DB: ", rows)
 	rows.Next()
 	var register sql.NullInt32
 	err = rows.Scan(&register)
