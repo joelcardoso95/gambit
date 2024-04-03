@@ -142,13 +142,13 @@ func SelectProduct(product models.Product, choice string, page int, pageSize int
 	var where, limit string
 
 	query = "SELECT Prod_Id, Prod_Title, Prod_Description, Prod_CreatedAt, Prod_Updated, Prod_Price, Prod_Path, Prod_CategoryId, Prod_Stock FROM products "
-	query = "SELECT count(*) as registros FROM products "
+	queryCount = "SELECT count(*) as registros FROM products "
 
 	switch choice {
 	case "P":
 		where = " WHERE Prod_Id = " + strconv.Itoa(product.ProductId)
 	case "S":
-		where = " WHERE UCASE(CONCAT(Prod_Title)) LIKE '%" + strings.ToUpper(product.ProdSearch) + "%' "
+		where = " WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%" + strings.ToUpper(product.ProdSearch) + "%' "
 	case "C":
 		where = " WHERE Prod_CategoryId = " + strconv.Itoa(product.ProdCategId)
 	case "U":
