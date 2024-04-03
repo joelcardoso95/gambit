@@ -42,7 +42,7 @@ func StringConnection(key models.SecretRDSJson) string {
 	authToken = key.Password
 	dbEndpoint = key.Host
 	dbName = "gambit"
-	databaseString := fmt.Sprintf("%s:%s@tcp(%s)/%s?allowCleartextPasswords=true?parseTime=true", dbUser, authToken, dbEndpoint, dbName)
+	databaseString := fmt.Sprintf("%s:%s@tcp(%s)/%s?allowCleartextPasswords=true&parseTime=true", dbUser, authToken, dbEndpoint, dbName)
 	fmt.Println(databaseString)
 	return databaseString
 }
