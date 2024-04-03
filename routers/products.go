@@ -126,3 +126,25 @@ func SelectProduct(request events.APIGatewayV2HTTPRequest) (int, string) {
 	return 200, string(returnedProduct)
 
 }
+
+func UpdateStock(body string, user string, productId int) (int, string) {
+	var product models.Product
+
+	err := json.Unmarshal([]byte(body), &product)
+	if err != nil {
+		return 400, "Erro ao receber os dados do produto " + err.Error()
+	}
+
+	isAdmin, msg := database.UserIsAdmin(user)
+	if !isAdmin {
+		return 400, msg
+	}
+
+	product.ProductId = productId
+	errUpdate := database.UpdateStock(product)
+	if errUpdate != nil {
+		return 400, "Erro ao realizar atualizar estoque " + strconv.Itoa(productId) + " > " + errUpdate.Error()
+	}
+
+	return 202, "Produto Atualizado"
+}

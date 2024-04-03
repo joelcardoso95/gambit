@@ -101,7 +101,7 @@ func CategoryProcess(body string, path string, method string, user string, id in
 }
 
 func StockProcess(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
-	return 400, "Method invalid"
+	return routers.UpdateStock(body, user, id)
 }
 
 func AddressProcess(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {

@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -250,4 +251,29 @@ func SelectProduct(product models.Product, choice string, page int, pageSize int
 
 	fmt.Println("Produtos consultados com sucesso: ", response.Data)
 	return response, nil
+}
+
+func UpdateStock(product models.Product) error {
+	fmt.Println("Atualizando estoque")
+
+	if product.ProdStock == 0 {
+		return errors.New("[Error] Parâmetros Stock não localizado")
+	}
+
+	err := DatabaseConnection()
+	if err != nil {
+		return err
+	}
+	defer Database.Close()
+
+	query := "UPDATE products SET Prod_Stock = Prod_Stock + " + strconv.Itoa(product.ProdStock) + " WHERE Prod_Id = " + strconv.Itoa(product.ProductId)
+
+	_, err = Database.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Estoque atualizado com sucesso")
+	return nil
 }
