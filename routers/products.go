@@ -146,5 +146,5 @@ func UpdateStock(body string, user string, productId int) (int, string) {
 		return 400, "Erro ao realizar atualizar estoque " + strconv.Itoa(productId) + " > " + errUpdate.Error()
 	}
 
-	return 202, "Produto Atualizado"
+	return 202, "Estoque Atualizado"
 }
