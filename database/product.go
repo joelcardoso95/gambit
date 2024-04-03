@@ -148,7 +148,7 @@ func SelectProduct(product models.Product, choice string, page int, pageSize int
 	case "P":
 		where = " WHERE Prod_Id = " + strconv.Itoa(product.ProductId)
 	case "S":
-		where = " WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%" + strings.ToUpper(p.ProdSearch) + "%' "
+		where = " WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%" + strings.ToUpper(product.ProdSearch) + "%' "
 	case "C":
 		where = " WHERE Prod_CategoryId = " + strconv.Itoa(product.ProdCategId)
 	case "U":
