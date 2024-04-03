@@ -115,7 +115,7 @@ func SelectProduct(request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	result, errSelect := database.SelectProduct(product, choice, page, pageSize, orderType, orderField)
 	if errSelect != nil {
-		return 400, "Erro ao consultar produtos " + errSelect.error()
+		return 400, "Erro ao consultar produtos " + errSelect.Error()
 	}
 
 	returnedProduct, errJson := json.Marshal(result)
